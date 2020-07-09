@@ -1,0 +1,301 @@
+<div class="donation-main">
+    <div class="donation-header">Donation Form</div>
+    <div class="donation-content">
+        <mat-hint align="start"><span class="mandatory-feild">*</span> Marked fileds are mandatory</mat-hint>
+        <form [formGroup]="donorForm" class="form-padding" (ngSubmit)="donate(donorForm.value)">
+            <mat-accordion class="accordion-class">
+                <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                    <mat-expansion-panel-header class="panel-header">
+                        <mat-panel-title>
+                            Personal data
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            Fill your Personal details to Proceed further
+                        </mat-panel-description>
+                        <mat-icon>account_circle</mat-icon>
+                    </mat-expansion-panel-header>
+                    <form formGroupName="personalDataForm" class="form-padding data-form">
+                        <div class="name-content">
+                            <mat-form-field>
+                                <mat-label>Salutation</mat-label>
+                                <select matNativeControl formControlName="salutation" required>
+                                    <option class="option-display"></option>
+                                    <option *ngFor="let item of salutationTypes" value="{{item}}">{{item}}</option>
+                                </select>
+                                <mat-error *ngFor="let validation of errorMessages.salutation">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('salutation').hasError(validation.type) && (donorForm.get('personalDataForm').get('salutation').dirty || donorForm.get('personalDataForm').get('salutation').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput type="text" formControlName="fullname" placeholder="Full Name" required>
+                                <mat-error *ngFor="let validation of errorMessages.fullname">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('fullname').hasError(validation.type) && (donorForm.get('personalDataForm').get('fullname').dirty || donorForm.get('personalDataForm').get('fullname').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="details-content">
+                            <mat-form-field>
+                                <input matInput type="email" formControlName="email" placeholder="Email ID" required>
+                                <mat-error *ngFor="let validation of errorMessages.email">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('email').hasError(validation.type) && (donorForm.get('personalDataForm').get('email').dirty || donorForm.get('personalDataForm').get('email').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput type="tel" formControlName="mobile" placeholder="Mobile No." required>
+                                <mat-error *ngFor="let validation of errorMessages.mobile">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('mobile').hasError(validation.type) && (donorForm.get('personalDataForm').get('mobile').dirty || donorForm.get('personalDataForm').get('mobile').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>Gender</mat-label>
+                                <select matNativeControl formControlName="gender" required>
+                                    <option class="option-display"></option>
+                                    <option *ngFor="let item of genderTypes" value="{{item.genderKey}}">
+                                        {{item.genderValue}}
+                                    </option>
+                                </select>
+                                <mat-error *ngFor="let validation of errorMessages.gender">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('gender').hasError(validation.type) && (donorForm.get('personalDataForm').get('gender').dirty || donorForm.get('personalDataForm').get('gender').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="pand-card">
+                            <mat-checkbox color="primary" [formControl]="checked" labelPosition="after">
+                                Tax Exemption required
+                            </mat-checkbox>
+
+                            <mat-form-field *ngIf="checked.value">
+                                <input matInput type="text" oninput='this.value = this.value.toUpperCase()'
+                                    formControlName="pancard" placeholder="Pan Card No." required>
+                                <mat-hint align="start">Enter Full Name as per PAN records</mat-hint>
+                                <mat-error *ngFor="let validation of errorMessages.pancard">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('pancard').hasError(validation.type) && (donorForm.get('personalDataForm').get('pancard').dirty || donorForm.get('personalDataForm').get('pancard').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                            <div>
+                                <mat-checkbox color="primary" [formControl]="docCopy" labelPosition="after">
+                                    Hard Copy Required
+                                </mat-checkbox>
+                                <button mat-icon-button (click)="tooltip.toggle()" #tooltip="matTooltip"
+                                    matTooltip="{{hardCopyInfo}}" matTooltipClass="tooltipInfo">
+                                    <mat-icon class="icons" color="primary">help
+                                    </mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <mat-action-row class="action-row">
+                        <button mat-raised-button type="button" color="primary" (click)="nextStep()"
+                            [disabled]="!donorForm.get('personalDataForm').valid">Next</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel [expanded]="step === 1" *ngIf="docCopy.value" (opened)="setStep(1)" hideToggle
+                    [disabled]="disableAddressPanel && !donorForm.get('personalDataForm').valid">
+                    <mat-expansion-panel-header class="panel-header">
+                        <mat-panel-title>
+                            Communication Details
+                        </mat-panel-title>
+                        <mat-panel-description class="panel-description">
+                            Required to send Donation certificate
+                        </mat-panel-description>
+                        <mat-icon>house</mat-icon>
+                    </mat-expansion-panel-header>
+
+                    <form formGroupName="addressDataForm" class="form-padding data-form">
+                        <mat-form-field class="route">
+                            <mat-label>Address (Area & Street)</mat-label>
+                            <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="5"
+                                formControlName="addressDetails"
+                                placeholder="Address... Special characters allowed (#/,-)" required></textarea>
+                            <mat-error *ngFor="let validation of errorMessages.addressDetails">
+                                <mat-error
+                                    *ngIf="donorForm.get('addressDataForm').get('addressDetails').hasError(validation.type) && (donorForm.get('addressDataForm').get('addressDetails').dirty || donorForm.get('addressDataForm').get('addressDetails').touched)">
+                                    {{validation.message}}</mat-error>
+                            </mat-error>
+                        </mat-form-field>
+                        <div class="address-subpart">
+                            <mat-form-field class="right-padding">
+                                <input matInput type="text" formControlName="locality" placeholder="Locality" required>
+                                <mat-error *ngFor="let validation of errorMessages.locality">
+                                    <mat-error
+                                        *ngIf="donorForm.get('addressDataForm').get('locality').hasError(validation.type) && (donorForm.get('addressDataForm').get('locality').dirty || donorForm.get('addressDataForm').get('locality').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="right-padding">
+                                <input matInput type="text" formControlName="landMark" placeholder="Land Mark">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input matInput type="text" formControlName="city" placeholder="City/Town/Village"
+                                    required>
+                                <mat-error *ngFor="let validation of errorMessages.locality">
+                                    <mat-error
+                                        *ngIf="donorForm.get('addressDataForm').get('city').hasError(validation.type) && (donorForm.get('addressDataForm').get('city').dirty || donorForm.get('addressDataForm').get('city').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="address-subpart">
+                            <mat-form-field class="right-padding">
+                                <input matInput type="text" formControlName="district" placeholder="District" required>
+                                <mat-error *ngFor="let validation of errorMessages.district">
+                                    <mat-error
+                                        *ngIf="donorForm.get('addressDataForm').get('district').hasError(validation.type) && (donorForm.get('addressDataForm').get('district').dirty || donorForm.get('addressDataForm').get('district').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="right-padding">
+                                <mat-label>State</mat-label>
+                                <select matNativeControl formControlName="state" required>
+                                    <option class="option-display"></option>
+                                    <option *ngFor="let item of states" value="{{item.stateKey}}">{{item.stateValue}}
+                                    </option>
+                                </select>
+                                <mat-error *ngFor="let validation of errorMessages.state">
+                                    <mat-error
+                                        *ngIf="donorForm.get('addressDataForm').get('state').hasError(validation.type) && (donorForm.get('addressDataForm').get('state').dirty || donorForm.get('addressDataForm').get('state').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input matInput type="text" formControlName="pincode" placeholder="Postal/Pin code"
+                                    required>
+                                <mat-hint align="start">6 digit Postal code</mat-hint>
+                                <mat-error *ngFor="let validation of errorMessages.pincode">
+                                    <mat-error
+                                        *ngIf="donorForm.get('addressDataForm').get('pincode').hasError(validation.type) && (donorForm.get('addressDataForm').get('pincode').dirty || donorForm.get('addressDataForm').get('pincode').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </form>
+
+                    <mat-action-row class="action-row">
+                        <button mat-raised-button type="button" color="warn" (click)="prevStep()">Previous</button>
+                        <button mat-raised-button type="button" color="primary" (click)="nextStep()"
+                            [disabled]="donorForm.get('personalDataForm').valid && !donorForm.get('addressDataForm').valid">Next</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle
+                    [disabled]="disablePaymentPanel && (!donorForm.get('personalDataForm').valid || (docCopy.value ? !donorForm.get('addressDataForm').valid : 'false'))">
+                    <mat-expansion-panel-header class="panel-header">
+                        <mat-panel-title>
+                            Payment Details
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            Required to complete Donation process
+                        </mat-panel-description>
+                        <mat-icon>payment</mat-icon>
+                    </mat-expansion-panel-header>
+
+                    <form formGroupName="paymentDataForm" class="form-padding data-form">
+                        <!-- <div class="name-content">
+                            <mat-form-field>
+                                <mat-label>Salutation</mat-label>
+                                <select matNativeControl formControlName="salutation" required>
+                                    <option class="option-display"></option>
+                                    <option *ngFor="let item of salutationTypes" value="{{item}}">{{item}}</option>
+                                </select>
+                                <mat-error *ngFor="let validation of errorMessages.salutation">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('salutation').hasError(validation.type) && (donorForm.get('personalDataForm').get('salutation').dirty || donorForm.get('personalDataForm').get('salutation').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput type="text" formControlName="fullname" placeholder="Full Name" required>
+                                <mat-error *ngFor="let validation of errorMessages.fullname">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('fullname').hasError(validation.type) && (donorForm.get('personalDataForm').get('fullname').dirty || donorForm.get('personalDataForm').get('fullname').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="details-content">
+                            <mat-form-field>
+                                <input matInput type="email" formControlName="email" placeholder="Email ID" required>
+                                <mat-error *ngFor="let validation of errorMessages.email">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('email').hasError(validation.type) && (donorForm.get('personalDataForm').get('email').dirty || donorForm.get('personalDataForm').get('email').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput type="tel" formControlName="mobile" placeholder="Mobile No." required>
+                                <mat-error *ngFor="let validation of errorMessages.mobile">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('mobile').hasError(validation.type) && (donorForm.get('personalDataForm').get('mobile').dirty || donorForm.get('personalDataForm').get('mobile').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>Gender</mat-label>
+                                <select matNativeControl formControlName="gender" required>
+                                    <option class="option-display"></option>
+                                    <option *ngFor="let item of genderTypes" value="{{item.genderKey}}">{{item.genderValue}}
+                                    </option>
+                                </select>
+                                <mat-error *ngFor="let validation of errorMessages.gender">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('gender').hasError(validation.type) && (donorForm.get('personalDataForm').get('gender').dirty || donorForm.get('personalDataForm').get('gender').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="pand-card">
+                            <mat-checkbox color="primary" [formControl]="checked" labelPosition="after">
+                                Tax Exemption required
+                            </mat-checkbox>
+
+                            <mat-form-field *ngIf="checked.value">
+                                <input matInput type="text" oninput='this.value = this.value.toUpperCase()'
+                                    formControlName="pancard" placeholder="Pan Card No." required>
+                                <mat-hint align="start">Enter Full Name as per PAN records</mat-hint>
+                                <mat-error *ngFor="let validation of errorMessages.pancard">
+                                    <mat-error
+                                        *ngIf="donorForm.get('personalDataForm').get('pancard').hasError(validation.type) && (donorForm.get('personalDataForm').get('pancard').dirty || donorForm.get('personalDataForm').get('pancard').touched)">
+                                        {{validation.message}}</mat-error>
+                                </mat-error>
+                            </mat-form-field>
+                            <div>
+                                <mat-checkbox color="primary" [formControl]="docCopy" labelPosition="after">
+                                    Hard Copy Required
+                                </mat-checkbox>
+                                <button mat-icon-button (click)="tooltip.toggle()" #tooltip="matTooltip"
+                                    matTooltip="{{hardCopyInfo}}" matTooltipClass="tooltipInfo">
+                                    <mat-icon class="icons" color="primary">help
+                                    </mat-icon>
+                                </button>
+                            </div>
+                        </div> -->
+                    </form>
+
+                    <mat-action-row class="action-row">
+                        <button mat-raised-button type="button" color="warn" (click)="prevStep()">Previous</button>
+                        <button mat-raised-button type="submit" color="primary" (click)="nextStep()"
+                            [disabled]="!donorForm.valid">Submit</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+
+            </mat-accordion>
+        </form>
+    </div>
+</div>

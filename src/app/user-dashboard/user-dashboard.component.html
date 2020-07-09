@@ -1,0 +1,51 @@
+<div class="grid-container">
+    <a class="dashboard-card" routerLink="../profile">
+        <div class="dashboard-card-header">
+            Profile
+        </div>
+        <mat-divider></mat-divider>
+        <div class="dashboard-card-content">
+            <div>Profile</div>
+        </div>
+    </a>
+
+    <div class="dashboard-card">
+        <div class="dashboard-card-header">
+            Recent Activities
+        </div>
+        <mat-divider></mat-divider>
+        <div class="dashboard-card-content">
+            <app-carousel [autoPlayDuration]="5000" animation="slide" [isNavigationVisible]="true" [slides]="slides"
+                [slideTemplateRef]="slide"></app-carousel>
+        </div>
+    </div>
+
+    <a class="dashboard-card" routerLink="../donations">
+        <div class="dashboard-card-header">
+            My Donations
+        </div>
+        <mat-divider></mat-divider>
+        <div class="dashboard-card-content">
+            <div>donations</div>
+        </div>
+    </a>
+
+    <a class="dashboard-card" routerLink="../complaints-queries">
+        <div class="dashboard-card-header">
+            My Complaints/Queries
+        </div>
+        <mat-divider></mat-divider>
+        <div class="dashboard-card-content">
+            <div>complaints</div>
+        </div>
+    </a>
+</div>
+
+<ng-template #slide let-slide>
+    <a class="slide" routerLink="../recent-activities">
+        <img [src]="slide.url" *ngIf="!slide.isVideo">
+        <video [src]="slide.url" *ngIf="slide.isVideo" autoplay></video>
+    </a>
+</ng-template>
+
+<input #fileInput type="file" (change)="onFileChange($event)">

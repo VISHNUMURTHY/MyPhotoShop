@@ -1,0 +1,43 @@
+:host {
+    background: white;
+    flex-grow: 1;
+    display: flex;
+}
+
+.photo-video-main {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+.photo-video-gallery {
+    max-width: calc(50% - 24px);
+    width: calc(50% - 24px);
+    padding: 12px;
+
+    & img {
+        width: 100%;
+    }
+
+    & video {
+        width: 100%;
+    }
+
+    & .description {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: calc(100% - 24px);
+    }
+}
+
+@media screen and (max-width:700px) {
+    .photo-video-gallery {
+        max-width: calc(100% - 24px);
+        width: calc(100% - 24px);
+
+        & .description {
+            width: 100%;
+        }
+    }
+}

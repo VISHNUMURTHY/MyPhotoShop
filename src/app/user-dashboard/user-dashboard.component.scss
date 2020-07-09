@@ -1,0 +1,69 @@
+:host {
+  background: white;
+  flex-grow: 1;
+}
+
+.grid-container {
+  margin: 40px 40px 20px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.dashboard-card {
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5), 0px 2px 5px 0px rgba(0, 0, 0, 0.54), 0px 1px 3px 0px rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  min-width: 30%;
+  width: 30%;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+.dashboard-card-header {
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: black;
+}
+
+.dashboard-card-content {
+  margin: 14px 16px;
+  max-width: calc(100% - 32px);
+  height: 200px;
+}
+
+a.slide {
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+
+  & img,
+  video {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .grid-container {
+    margin: 16px;
+    flex-flow: column;
+  }
+
+  .dashboard-card {
+    width: auto;
+    margin-bottom: 16px;
+  }
+
+  a:last-child {
+    margin-bottom: 0;
+  }
+
+  .dashboard-card-content {
+    width: auto;
+    max-width: calc(100% - 32px);
+    height: 200px;
+  }
+}

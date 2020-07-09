@@ -1,0 +1,49 @@
+.header {
+    background-color: darkblue;
+    height: 50px;
+    padding: 10px 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    vertical-align: middle;
+    box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+    color: white;
+    z-index: 999;
+  }
+  
+  .logo {
+    width: 70px;
+    height: 50px;
+    margin: 0px;
+    padding: 0px;
+    left: 0;
+  }
+
+  .flex-spacer{
+    flex-grow: 1;
+  }
+
+  button.mat-menu-item{
+    height: 32px;
+    line-height: 0;
+  }
+
+  .display-menu{
+    display: none;
+  }
+
+  @media screen and (max-width: 700px){
+    .display-links{
+      display: none;
+    }
+
+    .display-menu{
+      padding: 4px;
+      display: flex;
+    }
+  }

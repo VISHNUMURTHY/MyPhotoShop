@@ -1,0 +1,20 @@
+<div *ngIf="!isVideo" class="photo-video-main">
+    <ng-container *ngFor="let item of imageList">
+        <div class="photo-video-gallery">
+            <img [src]="item.src" matTooltip="{{item.description}}">
+            <div class="description">
+                {{item.description}}
+            </div>
+        </div>
+    </ng-container>
+</div>
+<div *ngIf="isVideo" class="photo-video-main">
+    <ng-container *ngFor="let item of videoList">
+        <div class="photo-video-gallery">
+            <video [src]="item.src" autoplay controls matTooltip="{{item.description}}"></video>
+            <div class="description">
+                {{item.description}}
+            </div>
+        </div>
+    </ng-container>
+</div>
